@@ -8,6 +8,8 @@ public class UserValidation {
     private static final String LAST_NAME_PATTERN = "^[A-Z]{1}[a-z]{2,}";
 
     private static final String EMAIL_PATTERN = "^([a-zA-Z0-9.]+)@([a-zA-Z0-9]+).([a-zA-Z]{2,3})$";
+    private static final String MOBILE_NUMBER_PATTERN = "(0|91)?\\s([7-9][0-9]{9})";
+
     //First name starts with Cap and has minimum 3 characters
     public boolean isValidFirstName(String fname) {
         /**
@@ -37,4 +39,15 @@ public class UserValidation {
         Pattern pattern = Pattern.compile(EMAIL_PATTERN);
         return pattern.matcher(emailId).matches();
     }
+    //Country code follow by space and 10 digit number
+    /**
+     *
+     * @param mobileNo
+     * @return boolean
+     */
+    public boolean isValidMobileNo(String mobileNo) {
+        Pattern pattern = Pattern.compile(MOBILE_NUMBER_PATTERN);
+        return pattern.matcher(mobileNo). matches();
+    }
+
 }
