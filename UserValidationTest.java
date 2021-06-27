@@ -1,39 +1,44 @@
 package com.bridgelabz.regex;
 
-import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
+import java.util.Arrays;
+import java.util.Collection;
 
-public class UserValidationTest {
+@RunWith(Parameterized.class)
+public class UserValidatorTest {
+    private String emailIdTest;
+    private  boolean expectedResult;
+    private UserValidator validator;
 
-        @Test
-        public void givenEmailId_WhenProper_ShouldReturnTrue(){
-            UserValidation valid = new UserValidation();
-            assertTrue(valid.isValidEmailId("abc@yahoo.com"));
-            assertTrue(valid.isValidEmailId("abc-100@yahoo.com"));
-            assertTrue(valid.isValidEmailId("abc.100@yahoo.com"));
-            assertTrue(valid.isValidEmailId("abc111@abc.com"));
-            assertTrue(valid.isValidEmailId("abc-100@abc.net"));
-            assertTrue(valid.isValidEmailId("abc.100@abc.com.au"));
-            assertTrue(valid.isValidEmailId("abc@1.com"));
-            assertTrue(valid.isValidEmailId("abc@gmail.com.com"));
-            assertTrue(valid.isValidEmailId("abc+100@gmail.com"));
-        }
+    @Before
+    public void initialize(){
+        validator = new UserValidator();
+    }
 
-        @Test
-        public void givenEmailId_WhenNotProper_ShouldReturnFalse(){
-            UserValidation inValid = new UserValidation();
-            assertFalse(valid.isValidEmailId("abc.@gmail.com"));
-            assertFalse(valid.isValidEmailId("abc@.com.my"));
-            assertFalse(valid.isValidEmailId("abc123@gmail.a"));
-            assertFalse(valid.isValidEmailId("abc123@.com"));
-            assertFalse(valid.isValidEmailId("abc123@.com.com"));
-            assertFalse(valid.isValidEmailId(".abc@abc.com"));
-            assertFalse(valid.isValidEmailId("abc()*@gmail.com"));
-            assertFalse(valid.isValidEmailId("abc@%*.com"));
-            assertFalse(valid.isValidEmailId("abc..2002@gmail.com"));
-            assertFalse(valid.isValidEmailId("abc.@gmail.com"));
-            assertFalse(valid.isValidEmailId("abc@gmail.com.1a"));
-            assertFalse(valid.isValidEmailId("abc@gmail.com.aa.au"));
-        }
+    public UserValidatorTest(String emailIdTest, boolean expectedResult){
+        this.emailIdTest = emailIdTest;
+        this.expectedResult = expectedResult;
+    }
+
+    @Parameterized.Parameters
+    public static Collection data() {
+        return Arrays.asList(new Object[][]{
+                {"abc@yahoo.com", true}, {"abc-100@yahoo.com", true}, {"abc.100@yahoo.com", true},
+                {"abc111@abc.com", true}, {"abc-100@abc.net", true}, {"abc.100@abc.com.au", true},
+                {"abc@1.com", true}, {"abc@gmail.com.com", true}, {"abc+100@gmail.com", true},
+                {"abc.@gmail.com", false}, {"abc@.com.my", false}, {"abc123@gmail.a", false},
+                {"abc123@.com", false}, {"abc123@.com.com", false}, {".abc@abc.com", false},
+                {"abc()*@gmail.com", false}, {"abc@%*.com", false}, {"abc..2002@gmail.com", false},
+                {"abc.@gmail.com", false}, {"abc@gmail.com.1a", false}, {"abc@gmail.com.aa.au", false}});
+    }
+
+    @Test
+    public void givenEmailAsVar_ShouldReturnAsPerTheParameterizedResult () {
+        System.out.println("Email Ids :" +emailIdTest);
+        Assert.assertEquals(expectedResult, validator.isValidEmailId(emailIdTest));
+    }
 }
